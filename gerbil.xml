@@ -1,0 +1,88 @@
+<mujoco model="gerbil">
+    <compiler inertiafromgeom="true" angle="degree"/> 
+
+    <default>
+        <geom condim="4" material="matgeom"/>
+    </default>
+
+    <option timestep="0.001" iterations="50" tolerance="1e-10" solver="Newton" jacobian="dense" cone="pyramidal" gravity="0 0 -9.81"/>
+           <!-- density="0.5" viscosity="0.00002""/> -->
+    <size nconmax="50" njmax="200" nstack="10000"/>
+
+    <visual>
+        <map force="0.1" zfar="30"/>
+        <rgba haze="0.15 0.25 0.35 1"/>
+        <quality shadowsize="2048"/>
+        <global offwidth="800" offheight="800"/>
+    </visual>
+
+    <asset>
+        <texture type="skybox" builtin="gradient" rgb1="0.3 0.5 0.7" rgb2="0 0 0" width="512" height="512"/>
+        <texture name="texplane" type="2d" builtin="checker" rgb1=".2 .3 .4" rgb2=".1 0.15 0.2" width="512" height="512" mark="cross" markrgb=".8 .8 .8"/>
+        <texture name="texgeom" type="cube" builtin="flat" mark="cross" width="127" height="1278"
+            rgb1="0.8 0.6 0.4" rgb2="0.8 0.6 0.4" markrgb="1 1 1" random="0.01"/>
+
+        <material name="matplane" reflectance="0.3" texture="texplane" texrepeat="1 1" texuniform="true"/>
+        <material name="matgeom" texture="texgeom" texuniform="true" rgba="0.8 0.6 .4 1"/>
+    </asset>
+
+    <worldbody>
+        <light directional="true" diffuse=".8 .8 .8" specular=".2 .2 .2" pos="0 0 5" dir="0 0 -1"/>
+        <geom name="floor" pos="0 0 -3" size="0 0 .25" type="plane" material="matplane" condim="3"/>
+
+        <body name="platform_start" pos= "0 0 -3">
+            <geom name="platform_start" type="box" size="1 1 2" rgba="1 1 1 1"/>
+        </body>
+
+        <body name="platform_end" pos= "0 3.0 -3" mocap="true">
+            <!-- <joint name="slide" type="slide" axis="0 1 0" range="-10 10" damping="0"/> -->
+            <geom name="platform_end" type="box" size="1 1 2" rgba="1 1 1 1"/> 
+            <geom name="highlighted_edge" type="capsule" fromto="-1 0 2 1 0 2" size="0.05" rgba="1 0 0 1" contype="0" conaffinity="0"/>
+        </body>
+
+        <!-- Central Body  -->
+        <body name="gerbil" axisangle="0 0 1 180" pos="0 0 -0.9">
+            <freejoint/>
+            <body name="central_body" pos="0 0 0.5">
+                <camera name="fixed_cam" pos="0 0 0" quat="0 0 0.707 0.707" fovy="45"/> 
+                <site name="sensor_site" pos="0 0 0" size="0.01"/>
+                <geom type="box" size="0.2 0.1 0.05" rgba="0.8 0.6 0.4 1" mass="10.0" contype="0" conaffinity="0"/>
+
+                <!-- First Leg -->
+                <body name="left_leg" pos="0.225 0 0.5">
+                    <joint name="left_piston" type="slide" pos="0 0 -1" axis="0 0 1" range="-0.5 0"/>
+                    <geom type="capsule" size="0.05 0.5" pos="0 0 -0.5" mass="0.001"/>
+                    <body name="left_foot" pos="0 0 -1.05">
+                        <joint name="left_ankle" type="hinge" pos="0 0 0" axis="1 0 0" range="-20 0" limited="true"/>
+                        <geom type="box" size="0.1 0.75 0.02" pos= "0 0 0" mass="0.1"/>
+                    </body>
+                </body>
+
+                <!-- Second Leg -->
+                <body name="right_leg" pos="-0.225 0 0.5">
+                    <joint name="right_piston" type="slide" pos="0 0 -1" axis="0 0 1" range="-0.5 0"/>
+                    <geom type="capsule" size="0.05 0.5" pos="0 0 -0.5" mass="0.001"/>
+                    <body name="right_foot" pos="0 0 -1.05">
+                        <joint name="right_ankle" type="hinge" pos="0 0 0" axis="1 0 0" range="-20 0" limited="true"/>
+                        <geom type="box" size="0.1 0.75 0.02" pos= "0 0 0" mass="0.1"/>
+                    </body>
+                </body>
+            </body>
+        </body>
+    </worldbody>
+
+    <!-- Motors -->
+    <actuator>
+        <cylinder name="left piston" joint="left_piston" timeconst="0.1"/>
+        <cylinder name="right piston" joint="right_piston" timeconst="0.1"/>
+
+        <position name="left ankle" joint="left_ankle" kp="50" kv="5"/>
+        <position name="right ankle" joint="right_ankle" kp="50" kv="5"/>
+    </actuator>
+
+    <sensor> 
+        <accelerometer name="acceleration" site="sensor_site"/>
+        <velocimeter name="velocity" site="sensor_site"/>
+    </sensor>
+</mujoco>
+
