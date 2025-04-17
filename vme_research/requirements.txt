@@ -1,0 +1,18 @@
+# pip requirements
+
+# numeric things
+numpy == 1.* # don't use numpy 2 yet
+matplotlib
+nptyping
+scipy
+pandas
+numba
+mujoco
+jax
+jaxopt
+
+# opencv
+opencv-python
+
+# for the RealSense camera
+#pyrealsense2

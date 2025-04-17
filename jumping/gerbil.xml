@@ -13,7 +13,7 @@
         <map force="0.1" zfar="30"/>
         <rgba haze="0.15 0.25 0.35 1"/>
         <quality shadowsize="2048"/>
-        <global offwidth="800" offheight="800"/>
+        <global offwidth="5000" offheight="5000"/>
     </visual>
 
     <asset>
@@ -37,14 +37,15 @@
         <body name="platform_end" pos= "0 3.0 -3" mocap="true">
             <!-- <joint name="slide" type="slide" axis="0 1 0" range="-10 10" damping="0"/> -->
             <geom name="platform_end" type="box" size="1 1 2" rgba="1 1 1 1"/> 
-            <geom name="highlighted_edge" type="capsule" fromto="-1 0 2 1 0 2" size="0.05" rgba="1 0 0 1" contype="0" conaffinity="0"/>
+            <geom name="highlighted_edge" type="capsule" fromto="-1 0 2 1 0 2" size="0.02" rgba="1 0 0 1" contype="0" conaffinity="0"/>
+            <site name="highlighted_edge" pos="0 0 2.0" size="0.1 0.1 0.1"/>
         </body>
 
         <!-- Central Body  -->
         <body name="gerbil" axisangle="0 0 1 180" pos="0 0 -0.9">
             <freejoint/>
             <body name="central_body" pos="0 0 0.5">
-                <camera name="fixed_cam" pos="0 0 0" quat="0 0 0.707 0.707" fovy="45"/> 
+                <camera name="cam" pos="0 0 0" quat="0 0 0.707 0.707" fovy="90"/>
                 <site name="sensor_site" pos="0 0 0" size="0.01"/>
                 <geom type="box" size="0.2 0.1 0.05" rgba="0.8 0.6 0.4 1" mass="10.0" contype="0" conaffinity="0"/>
 
@@ -76,8 +77,8 @@
         <cylinder name="left piston" joint="left_piston" timeconst="0.1"/>
         <cylinder name="right piston" joint="right_piston" timeconst="0.1"/>
 
-        <position name="left ankle" joint="left_ankle" kp="50" kv="5"/>
-        <position name="right ankle" joint="right_ankle" kp="50" kv="5"/>
+        <position name="left ankle" joint="left_ankle" kp="100" kv="5"/>
+        <position name="right ankle" joint="right_ankle" kp="100" kv="5"/>
     </actuator>
 
     <sensor> 
