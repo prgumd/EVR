@@ -1,6 +1,6 @@
 # Embodied Visuomotor Representation
 
-[Webpage](https://prg.cs.umd.edu/EVR), [arXiv](https://arxiv.org/abs/2410.00287)
+[Videos](https://prg.cs.umd.edu/EVR), [npj Robotics](https://www.nature.com/articles/s44182-025-00047-y)
 
 
 ## Uncalibrated Jumping Simulation
